@@ -2,6 +2,7 @@ import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import ocrRoutes from './routes/ocr.routes.js';
+import groupRoutes from './routes/group.routes.js';
 import { errorMiddleware } from './middleware/error.middleware.js';
 
 const app = express();
@@ -28,6 +29,7 @@ app.get('/health', (_req, res) => {
 
 // API Routes
 app.use('/api/ocr', ocrRoutes);
+app.use('/api/groups', groupRoutes);
 
 // Error handling middleware (must be last)
 app.use(errorMiddleware);
@@ -41,5 +43,6 @@ app.listen(PORT, () => {
     console.log(`🌐 CORS enabled for: ${FRONTEND_URL}`);
     console.log(`📋 Health check: http://localhost:${PORT}/health`);
     console.log(`🔍 OCR endpoint: http://localhost:${PORT}/api/ocr/process`);
+    console.log(`👥 Groups endpoint: http://localhost:${PORT}/api/groups`);
     console.log('=================================');
 });

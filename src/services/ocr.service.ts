@@ -169,6 +169,13 @@ export async function processOCR(fileBuffer: Buffer): Promise<OcrResponse> {
 
         const items = parseReceiptItems(extractedText);
 
+        // Detectar si la boleta tiene propina sugerida
+        const hasSuggestedTip = /propina\s+sugerida/i.test(extractedText);
+
+        if (hasSuggestedTip) {
+            console.log('💵 Propina sugerida detectada en la boleta');
+        }
+
         console.log(`\n✅ Parseados ${items.length} items`);
         items.forEach(item => {
             console.log(`  ${item.qty}x ${item.name} → $${item.price.toLocaleString()}`);
@@ -184,6 +191,7 @@ export async function processOCR(fileBuffer: Buffer): Promise<OcrResponse> {
         return {
             success: true,
             items,
+            hasSuggestedTip,
         };
     } catch (error) {
         console.error('OCR processing error:', error);
