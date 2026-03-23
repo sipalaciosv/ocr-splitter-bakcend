@@ -73,7 +73,7 @@ router.get('/:id', async (req: Request, res: Response) => {
             });
         }
 
-        res.json({
+        return res.json({
             success: true,
             group: {
                 id: groupId,
@@ -84,7 +84,7 @@ router.get('/:id', async (req: Request, res: Response) => {
     } catch (error: any) {
         console.error('Error getting group:', error);
         const status = error.message.includes('permiso') ? 403 : 500;
-        res.status(status).json({
+        return res.status(status).json({
             success: false,
             error: error.message || 'Error al obtener el grupo',
         });
