@@ -1,12 +1,20 @@
 import vision from '@google-cloud/vision';
+import { fileURLToPath } from 'url';
+import path from 'path';
+
+// Resolve path relative to compiled file (dist/config/google-vision.js)
+// Go up 2 levels: config/ → dist/ → app root
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const credentialsPath = process.env.GOOGLE_APPLICATION_CREDENTIALS
+    || path.resolve(__dirname, '../../firebase-service-account.json');
+
+console.log('🔑 Credentials path:', credentialsPath);
 
 /**
  * Google Cloud Vision API client
- * Uses the same credentials as Firebase Admin SDK
  */
 export const visionClient = new vision.ImageAnnotatorClient({
-    // Credentials from GOOGLE_APPLICATION_CREDENTIALS env var
-    keyFilename: process.env.GOOGLE_APPLICATION_CREDENTIALS,
+    keyFilename: credentialsPath,
 });
 
 console.log('✅ Google Cloud Vision client initialized');
